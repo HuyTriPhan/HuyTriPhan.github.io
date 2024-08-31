@@ -1,0 +1,106 @@
+[
+{
+	"uri": "/vi/1-introduction/",
+	"title": "Giới thiệu",
+	"tags": [],
+	"description": "",
+	"content": "Trước khi đi sâu vào chi tiết của hội thảo, chúng ta hãy dành chút thời gian để giới thiệu các công cụ và dịch vụ chính mà chúng ta sẽ sử dụng.\nNội dung:\nAmazon S3 - Amazon Simple Storage Service AWS SDK - Your Toolkit for Building on AWS Spring Boot Amazon S3 - Amazon Simple Storage Service Amazon Simple Storage Service (Amazon S3) là một dịch vụ lưu trữ dạng đối tượng cung cấp khả năng mở rộng theo yêu cầu sử dụng, đảm bảo tính khả dụng của dữ liệu, độ bảo mật, và hiệu năng ở mức cao nhất.\nS3 được xây dựng để đáp ứng yêu cầu của khách hàng thuộc mọi quy mô và ngành nghề, đều có thể dùng dịch vụ này để lưu trữ và bảo vệ bất kỳ lượng dữ liệu nào.\nS3 có thể được dùng cho nhiều trường hợp sử dụng như kho dữ liệu (data warehouse), trang web, ứng dụng di động, sao lưu và khôi phục, lưu trữ, ứng dụng doanh nghiệp, thiết bị IoT và phân tích dữ liệu lớn. Ngoài ra, Amazon S3 còn cung cấp các tính năng quản lý dễ sử dụng, giúp bạn có thể tổ chức dữ liệu và cấu hình các biện pháp kiểm soát truy cập để đáp ứng yêu cầu cụ thể của doanh nghiệp, tổ chức và yêu cầu về tuân thủ.\nĐể biết thêm nhiều thông tin: Amazon S3 - Amazon Simple Storage Service.\nAWS SDK - Your Toolkit for Building on AWS AWS SDK là tập hợp các công cụ và thư viện giúp các nhà phát triển dễ dàng tương tác với các dịch vụ AWS hơn. Nó kết nối mã của bạn và AWS, xử lý các tác vụ phức tạp như xác thực, xử lý lỗi và định dạng dữ liệu. Thay vì viết mã dài để quản lý các chi tiết này, bạn có thể sử dụng SDK để tập trung vào việc xây dựng logic cốt lõi của ứng dụng. Hãy coi nó như một trợ lý hữu ích giúp đơn giản hóa công việc của bạn với AWS.\nBằng cách sử dụng AWS SDK, bạn có thể tập trung vào việc xây dựng các tính năng cốt lõi của ứng dụng mà không cần lo lắng về cơ sở hạ tầng AWS cơ bản.\nSpring Boot Spring Boot là một framework phát triển ứng dụng Java giúp đơn giản hóa việc xây dựng các ứng dụng doanh nghiệp. Với Spring Boot, bạn có thể dễ dàng cấu hình và triển khai ứng dụng mà không cần lo lắng về cấu hình phức tạp. Framework này cung cấp một cách tiếp cận \u0026ldquo;quy tắc hơn là cấu hình\u0026rdquo;, giúp tăng tốc quá trình phát triển và dễ dàng tích hợp với các dịch vụ web và microservices. "
+},
+{
+	"uri": "/vi/",
+	"title": "Tải tệp lên Amazon S3 Bucket bằng Java Spring Boot",
+	"tags": [],
+	"description": "",
+	"content": "Dự án AWS: Tải tệp lên Amazon S3 Bucket bằng Java Spring Boot Tổng quan Trong bài lab này, chúng ta sẽ tìm hiểu cách tải tệp lên Amazon S3 Bucket sử dụng Java Spring Boot. Đây là một nhiệm vụ phổ biến trong các ứng dụng web hiện đại, cho phép lưu trữ dữ liệu một cách an toàn và hiệu quả trên đám mây.\nSpring Boot, với các tính năng mạnh mẽ và dễ sử dụng, kết hợp cùng AWS SDK cho Java, giúp bạn dễ dàng tương tác với dịch vụ Amazon S3. Quy trình này bao gồm việc thiết lập cấu hình để kết nối với S3, viết mã xử lý việc tải tệp, và triển khai các phương thức bảo mật để đảm bảo an toàn dữ liệu.\nNgoài ra, chúng ta cũng sẽ xem xét việc triển khai các thành phần bổ sung như Auto Scaling Group để đảm bảo khả năng co giãn của ứng dụng, và Load Balancer để cân bằng tải và điều phối các yêu cầu truy cập từ phía người dùng.\nHãy chắc chắn rằng bạn đã quen thuộc với các khái niệm và quy trình này trước khi bắt tay vào triển khai thực tế.\nNội dung chính Giới thiệu Chuẩn bị Thêm Accect key, Secret key, Region Khởi tạo dự án Kiểm tra Dọn dẹp tài nguyên "
+},
+{
+	"uri": "/vi/2-preparation/2.1-create-iam-user/",
+	"title": "Tạo IAM User",
+	"tags": [],
+	"description": "",
+	"content": "Chúng ta sẽ cần một IAM User có khả năng truy cập vào S3 bucket để tải lên, lấy và xóa hình ảnh trong bucket\nĐến trang Identity and Access Management (IAM) bằng cách: Nhấp vào tên tài khoản ở góc trên bên phải và chọn My Security Credentials Nhập IAM vào thanh tìm kiếm dịch vụ và chọn ‘IAM’ Từ ngăn bên trái của bảng điều khiển IAM, chọn Users rồi nhấp vào nút Create User. Trong Specify user details Nhập user name sau đó chọn Provide user access to the AWS Management Console - optional Tiếp đến chọn I want to create an IAM user Kéo xuống cuối trang chọn Next Tiếp theo trong Set permissions chọn Attach policies directly Trong Permissions policies tìm kiếm và chọn AdministratorAccess và AmazonS3FullAccess cuối cùng nhấn Next Xem lại thông tin IAM User và nhấn vào nút Create User. Tại đây bạn chọn Download .csv file "
+},
+{
+	"uri": "/vi/4-create-project/create-spring-boot/",
+	"title": "Tạo Spring Boot",
+	"tags": [],
+	"description": "",
+	"content": "Đầu tiên chúng ta sẽ khởi tạo một spring boot\nVào trang SpringBoot.io Chọn Project: Maven \u0026ndash;\u0026gt; Language: Java \u0026ndash;\u0026gt; SpringBoot: 3.3.3 \u0026ndash;\u0026gt; Packaging: Jar \u0026ndash;\u0026gt; Java: 22 Nhập Artifact: AWS_S3_File_Upload Chọn ADD Dependencies sau đó thêm **Spring Web **, Thymeleaf, Spring Boot DevTools Cuối cùng chọn Generate để tải xuống. Khi bạn chọn phiên bản Java nào thì cần phải tải JDK phù hợp (Ở đây chúng ta sử dụng phiên bản JDK 22)\n"
+},
+{
+	"uri": "/vi/4-create-project/configure-source-code/",
+	"title": "Cấu hình mã nguồn",
+	"tags": [],
+	"description": "",
+	"content": " Mở file Spring Boot mới tạo bằng Interllij IDEA Trong thư mục com.example.AWS_S3_File_Upload chúng ta chọn New \u0026ndash;\u0026gt; Package đặt tên là model. Tương tự như vậy chúng ta tạo thêm hai parkage khác là controller và service Trong model chúng ta lại chọn new \u0026ndash;\u0026gt; Java Class đặt tên là User sau đó nhập: public class User { private String description; private String filename; public User() { } public String getDescription() { return description; } public void setDescription(String description) { this.description = description; } public String getFilename() { return filename; } public void setFilename(String filename) { this.filename = filename; } } Tương tự trong controller chúng ta cũng tạo một Java Class tên là UserController sau đó nhập: import com.amazonaws.AmazonServiceException; import com.example.AWS_S3_File_Upload.model.User; import com.example.AWS_S3_File_Upload.service.S3service; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.ui.Model; import org.springframework.stereotype.Controller; import org.springframework.web.bind.annotation.GetMapping; import org.springframework.web.bind.annotation.PostMapping; import org.springframework.web.bind.annotation.RequestParam; import org.springframework.web.multipart.MultipartFile; import software.amazon.awssdk.core.exception.SdkClientException; import java.io.IOException; @Controller public class UserController { @Autowired S3service s3service; @GetMapping(\u0026#34;file-upload\u0026#34;) public String fileUploadPage() { return \u0026#34;form\u0026#34;; } @PostMapping(\u0026#34;file-upload\u0026#34;) public String saveFiles(Model model, @RequestParam(\u0026#34;description\u0026#34;) String description, @RequestParam(\u0026#34;file\u0026#34;) MultipartFile multipartFile) throws IOException { String filename = multipartFile.getOriginalFilename(); User user = new User(); user.setFilename(filename); user.setDescription(description); try { s3service.uploadtoS3(multipartFile.getInputStream(), filename); model.addAttribute(\u0026#34;message\u0026#34;, \u0026#34;File Successfully Uploaded\u0026#34;); } catch (AmazonServiceException e) { model.addAttribute(\u0026#34;message\u0026#34;, \u0026#34;AWS Service Error\u0026#34;); e.printStackTrace(); } catch (SdkClientException e) { model.addAttribute(\u0026#34;error\u0026#34;, \u0026#34;SDK Client Error\u0026#34;); e.printStackTrace(); } catch (IOException e) { model.addAttribute(\u0026#34;error\u0026#34;, \u0026#34;Error Uploading file\u0026#34;); e.printStackTrace(); } return \u0026#34;form\u0026#34;; } } Tương tự trong service chúng ta cũng tạo một Java Class tên là S3service sau đó nhập: import org.springframework.stereotype.Service; import com.amazonaws.regions.Regions; import com.amazonaws.SdkClientException; import com.amazonaws.services.s3.AmazonS3; import com.amazonaws.services.s3.AmazonS3ClientBuilder; import com.amazonaws.services.s3.model.ObjectMetadata; import com.amazonaws.services.s3.model.PutObjectRequest; import java.io.IOException; import java.io.InputStream; @Service public class S3service { private String bucketName = \u0026#34;files123-s3\u0026#34;; Regions regions = Regions.AP_SOUTHEAST_1; public void uploadtoS3(InputStream inputStream, String filename) throws IOException, SdkClientException { AmazonS3 s3Client = AmazonS3ClientBuilder.standard() .withRegion(regions) .build(); ObjectMetadata metadata = new ObjectMetadata(); metadata.setContentType(\u0026#34;image/jpeg\u0026#34;); metadata.setContentLength(inputStream.available()); PutObjectRequest request = new PutObjectRequest(bucketName, filename, inputStream, metadata); s3Client.putObject(request); } } Tiếp theo chúng ta vào file pom.xml sau đó trong đoạn dependencies nhập: \u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.amazonaws\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;aws-java-sdk-s3\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.12.570\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; \u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.amazonaws\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;aws-java-sdk-s3\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.12.570\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; Sau khi nhập đoạn code trên chúng ta cần Reload project chúng ta nhấn Chuột phải \u0026ndash;\u0026gt; Maven \u0026ndash;\u0026gt; Reload project. "
+},
+{
+	"uri": "/vi/2-preparation/",
+	"title": "Chuẩn bị",
+	"tags": [],
+	"description": "",
+	"content": "Nội dung chính Tạo IAM User Tạo Secret key Tạo S3 Bucket "
+},
+{
+	"uri": "/vi/2-preparation/2.2-create-secret-key/",
+	"title": "Tạo Secret key",
+	"tags": [],
+	"description": "",
+	"content": "Tiếp theo từ IAM User bạn vừa tạo hãy tạo 1 secret key\nTừ ngăn bên trái của bảng điều khiển IAM, chọn Users rồi chọn user bạn vừa tạo. Tiếp theo trong Summary bạn chọn Create Accect Key\nTrong step 1 bạn chọn Local code sau chọn Next Tại step 2 bạn chọn Create Accect Key Tại đây bạn chọn Download .csv file "
+},
+{
+	"uri": "/vi/4-create-project/create-frontend-source-code/",
+	"title": "Tạo mã nguồn Frontend",
+	"tags": [],
+	"description": "",
+	"content": "Dự án này gần hoàn thành, nhưng chúng ta cần một giao diện để nhận việc tải file lên, vì vậy hãy tạo một giao diện người dùng cho nó.\nĐầu tiên bạn cần truy cập theo đường dẫn resources/template tạo một file HTML nhập tên là form Để tạo giao diện người dùng, bạn có thể sử dụng front end source code của tôi. \u0026lt;!DOCTYPE html\u0026gt; \u0026lt;html xmlns:th=\u0026#34;http://www.thymeleaf.org\u0026#34; lang=\u0026#34;en\u0026#34;\u0026gt; \u0026lt;head\u0026gt; \u0026lt;meta charset=\u0026#34;UTF-8\u0026#34;\u0026gt; \u0026lt;meta name=\u0026#34;viewport\u0026#34; content=\u0026#34;width=device-width, initial-scale=1.0\u0026#34;\u0026gt; \u0026lt;title\u0026gt;Registration Page\u0026lt;/title\u0026gt; \u0026lt;style\u0026gt; body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; } .container { background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; width: 300px; } h1 { color: #FF5768; text-align: center; margin-bottom: 20px; } .form-group { margin-bottom: 15px; } label { display: block; margin-bottom: 5px; color: #333; } input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; } button { width: 100%; padding: 10px; background-color: #FF5768; border: none; border-radius: 4px; color: white; font-size: 16px; cursor: pointer; } button:hover { background-color: #e04b5f; } .message { color: #FF5768; text-align: center; margin-top: 10px; } .error { color: #e04b5f; text-align: center; margin-top: 10px; } \u0026lt;/style\u0026gt; \u0026lt;/head\u0026gt; \u0026lt;body\u0026gt; \u0026lt;div class=\u0026#34;container\u0026#34;\u0026gt; \u0026lt;h1\u0026gt;Registration\u0026lt;/h1\u0026gt; \u0026lt;div style=\u0026#34;color: red\u0026#34; th:if=\u0026#34;${error != null}\u0026#34;\u0026gt; [[${error}]] \u0026lt;/div\u0026gt; \u0026lt;div style=\u0026#34;color: red\u0026#34; th:if=\u0026#34;${message != null}\u0026#34;\u0026gt; [[${message}]] \u0026lt;/div\u0026gt; \u0026lt;form method=\u0026#34;post\u0026#34; action=\u0026#34;/file-upload\u0026#34; enctype=\u0026#34;multipart/form-data\u0026#34;\u0026gt; \u0026lt;div class=\u0026#34;form-group\u0026#34;\u0026gt; \u0026lt;label for=\u0026#34;description\u0026#34;\u0026gt;Description:\u0026lt;/label\u0026gt; \u0026lt;input type=\u0026#34;text\u0026#34; id=\u0026#34;description\u0026#34; name=\u0026#34;description\u0026#34; required\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;div class=\u0026#34;form-group\u0026#34;\u0026gt; \u0026lt;label for=\u0026#34;file\u0026#34;\u0026gt;Upload File:\u0026lt;/label\u0026gt; \u0026lt;input type=\u0026#34;file\u0026#34; id=\u0026#34;file\u0026#34; name=\u0026#34;file\u0026#34; required\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;button type=\u0026#34;submit\u0026#34;\u0026gt;Register\u0026lt;/button\u0026gt; \u0026lt;/form\u0026gt; \u0026lt;p class=\u0026#34;message\u0026#34; th:text=\u0026#34;${message}\u0026#34;\u0026gt;\u0026lt;/p\u0026gt; \u0026lt;p class=\u0026#34;error\u0026#34; th:text=\u0026#34;${error}\u0026#34;\u0026gt;\u0026lt;/p\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;/body\u0026gt; \u0026lt;/html\u0026gt; Chạy Frontend Source và đây là kết quả: "
+},
+{
+	"uri": "/vi/2-preparation/2.3-create-s3-bucket/",
+	"title": "Tạo S3 Bucket",
+	"tags": [],
+	"description": "",
+	"content": "Cuối cùng nhưng không kém phần quan trọng, chúng ta sẽ cần một S3 bucket để lưu trữ dữ liệu hình ảnh. S3 Bucket là lựa chọn tuyệt vời để lưu trữ dữ liệu hình ảnh do khả năng mở rộng, độ bền và hiệu quả về chi phí.\nĐiều hướng đến trang S3 bằng cách nhập S3 vào thanh tìm kiếm dịch vụ và chọn dịch vụ ‘S3’ Chọn Create Bucket để tạo S3 Bucket mới. Nhập tên sau chọn ACLs enabled Xem lại thông tin tạo S3 Bucket và nhấp vào Create Bucket. "
+},
+{
+	"uri": "/vi/3-adding-accectkey-secretkey-region/",
+	"title": "Thêm Accect key, Secret key, Region",
+	"tags": [],
+	"description": "",
+	"content": "Thêm access key, secret key, và region của AWS S3 vào environment variables giúp bảo mật thông tin nhạy cảm, dễ dàng quản lý cấu hình và làm cho ứng dụng di động giữa các môi trường khác nhau mà không cần thay đổi mã nguồn.\nMở file user_accessKeys bạn vừa tải xuống lúc nãy copy Accect Key. Tiếp theo bạn vào Edit the system environment variable chọn Environment Variable. Trong bảng System Variable chọn New. Nhập tên và paste Accect Key vừa nãy vào Variable value sau đó nhấn OK. Tương tự bạn mở file user_credential bạn vừa tải xuống lúc nãy copy Password sau đó trong bảng System Variable chọn New. Nhập tên và paste Password vừa nãy vào Variable value sau đó nhấn OK. Tương tự trong bảng System Variable chọn New. Nhập tên và tên Region mà bạn đang sử dụng sau đó nhấn OK. Cuối cùng nhấn OK để lưu lại. "
+},
+{
+	"uri": "/vi/4-create-project/",
+	"title": "Khởi tạo dự án",
+	"tags": [],
+	"description": "",
+	"content": "Tổng quan\nSau khi hoàn tất các bước thiết lập , chúng ta đã sẵn sàng cấu hình một project bằng spring boot để tải file lên S3 Bucket. Thông tin chi tiết về Spring Boot: Spring Boot Cài đặt Intellij IDEA: Intellij IDEA Nội dung chính Tạo Spring Boot Cấu hình mã nguồn Tạo mã nguồn Frontend "
+},
+{
+	"uri": "/vi/5-test/",
+	"title": "Kiểm tra",
+	"tags": [],
+	"description": "",
+	"content": "Tiếp theo chúng ta sẽ chạy thử project xem trang web đã hoạt động ổn định chưa.\nBạn nhấn nút run để khởi chạy Project Bạn mở một tab mới nhập đường dẫn http://localhost:8080/file-upload Sau đó bạn chọn file bạn muốn tải lên và nhấn Upload. Truy cập vào S3 bucket của bạn để kiểm tra xem ảnh đã được tải lên chưa. Thỉnh thoảng Bạn đã run project nhưng lại báo lỗi ko tìm thấy form.html thì bạn cần phải rebuild Java project khi có sự thay đổi trong mã nguồn, cấu hình, thư viện, hoặc cấu trúc project để đảm bảo rằng tất cả các thay đổi này được biên dịch và áp dụng chính xác. Để Rebuild Project bạn chọn meun \u0026ndash;\u0026gt; build \u0026ndash;\u0026gt; Rebuild Project\n"
+},
+{
+	"uri": "/vi/6-clean-up-resources/",
+	"title": "Dọn dẹp tài nguyên",
+	"tags": [],
+	"description": "",
+	"content": "Vào cuối buổi hội thảo này, chúng ta sẽ dọn dẹp tất cả các tài nguyên đã tạo ra!\nXóa S3 Bucket: Hãy thận trọng khi xóa bucket, vì nó cũng sẽ xóa tất cả các đối tượng được lưu trữ bên trong. Đảm bảo bạn có bản sao lưu nếu cần. Xác định vị trí S3 Bucket bạn đã tạo. Chọn Bucket bằng cách nhấp vào tên Bucket. Nếu Bucket chứa các đối tượng, bạn có thể xóa thủ công bằng cách xóa từng đối tượng hoặc sử dụng tùy chọn Empty bucket. Để xóa Bucket , hãy nhấp vào nút Action, sau đó là Manage bucket và cuối cùng là Empty bucket. Khi Bucket đã trống (hoặc nếu đã trống), hãy nhấp lại vào nút \u0026ldquo;Action. Chọn Delete và xác nhận xóa. Xóa IAM User Truy cập vào IAM chọn tên user bạn muốn xóa. Nhấn Delete và xác nhận xóa. "
+},
+{
+	"uri": "/vi/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/vi/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

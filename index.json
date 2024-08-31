@@ -1,0 +1,106 @@
+[
+{
+	"uri": "/1-introduction/",
+	"title": "Introduction",
+	"tags": [],
+	"description": "",
+	"content": "Before we dive into the details of the workshop, let\u0026rsquo;s take a moment to introduce the main tools and services we\u0026rsquo;ll be using.\nContents:\nAmazon S3 - Amazon Simple Storage Service AWS SDK - Your Toolkit for Building on AWS Spring Boot Amazon S3 - Amazon Simple Storage Service Amazon Simple Storage Service (Amazon S3) is an object storage service that provides on-demand scalability, ensuring the highest data availability, security, and performance levels.\nS3 is built to meet the needs of customers of all sizes and industries, who can use this service to store and protect any data.\nS3 can be used for a variety of use cases, including data warehouses, websites, mobile applications, backup and restore, archiving, enterprise applications, IoT devices, and big data analytics. Additionally, Amazon S3 provides easy-to-use management features that help you organize your data and configure access controls to meet your specific business, organizational, and compliance needs.\nFor more information: Amazon S3 - Amazon Simple Storage Service.\nAWS SDK - Your Toolkit for Building on AWS The AWS SDK is a collection of tools and libraries that make it easier for developers to interact with AWS services. It connects your code to AWS, handling complex tasks like authentication, error handling, and data formatting. Instead of writing lengthy code to manage these details, you can use the SDK to focus on building the core logic of your application. Think of it as a handy assistant that simplifies your work with AWS.\nUsing the AWS SDK, you can focus on building the core features of your application without worrying about the underlying AWS infrastructure.\nSpring Boot Spring Boot is a Java application development framework that simplifies the building of enterprise applications. With Spring Boot, you can easily configure and deploy applications without worrying about complex configurations. The framework provides a “rules over configuration” approach, which speeds up development and easily integrates with web services and microservices. "
+},
+{
+	"uri": "/",
+	"title": "Uploading Files to Amazon S3 Bucket Using Java Spring Boot",
+	"tags": [],
+	"description": "",
+	"content": "AWS Project: Uploading Files to Amazon S3 Bucket Using Java Spring Boot Overview In this lab, we will learn how to upload files to Amazon S3 Bucket using Java Spring Boot. This is a common task in modern web applications, allowing data to be stored securely and efficiently in the cloud.\nSpring Boot, with its powerful and easy-to-use features, combined with the AWS SDK for Java, makes it easy for you to interact with the Amazon S3 service. This process includes configuring the connection to S3, writing code to handle file uploads, and implementing security methods to ensure data safety.\nIn addition, we will also consider implementing additional components such as Auto Scaling Group to ensure the scalability of the application, and Load Balancer to load balance and coordinate access requests from the user side.\nMake sure you are familiar with these concepts and processes before you start implementing them.\nMain content Introduction Preparation Adding Accect key, Secret key, Region Initializing the project Testing Clean-Up-Resources "
+},
+{
+	"uri": "/2-preparation/2.1-create-iam-user/",
+	"title": "Create IAM User",
+	"tags": [],
+	"description": "",
+	"content": "We will need an IAM User with the ability to access the S3 bucket to upload, retrieve, and delete images in the bucket\nGo to the Identity and Access Management (IAM) page by: Click on the account name in the upper right corner and select My Security Credentials\nType IAM in the service search bar and select ‘IAM’\nFrom the left pane of the IAM dashboard, select Users and click the Create User button. In Specify user details Enter the user name then select Provide user access to the AWS Management Console - optional\nNext select I want to create an IAM user\nScroll down to the bottom of the page and select Next Next in Set permissions select Attach policies directly In Permissions policies search and select AdministratorAccess and AmazonS3FullAccess finally click Next Review the IAM User information and click the Create User button. Here you select Download .csv file "
+},
+{
+	"uri": "/4-create-project/create-spring-boot/",
+	"title": "Create Spring Boot",
+	"tags": [],
+	"description": "",
+	"content": "First, we will initialize a spring boot\nGo to SpringBoot.io Select Project: Maven \u0026ndash;\u0026gt; Language: Java \u0026ndash;\u0026gt; SpringBoot: 3.3.3 \u0026ndash;\u0026gt; Packaging: Jar \u0026ndash;\u0026gt; Java: 22 Enter Artifact: AWS_S3_File_Upload Select ADD Dependencies then add Spring Web, Thymeleaf, Spring Boot DevTools Finally select Generate to download. When you choose a Java version, you need to download the appropriate JDK (Here we use JDK version 22)\n"
+},
+{
+	"uri": "/2-preparation/2.2-create-secret-key/",
+	"title": "Create Secret key",
+	"tags": [],
+	"description": "",
+	"content": "Next from the IAM User you just created, create a secret key\nFrom the left pane of the IAM dashboard, select Users and then select the user you just created. Next in Summary you select Create Accect Key\nIn step 1 you select Local code then select Next In step 2 you select Create Accect Key Here you select Download .csv file "
+},
+{
+	"uri": "/2-preparation/",
+	"title": "Preparation",
+	"tags": [],
+	"description": "",
+	"content": "Nội dung chính Tạo IAM User Tạo Secret key Tạo S3 Bucket "
+},
+{
+	"uri": "/4-create-project/configure-source-code/",
+	"title": "Source Code Configuration",
+	"tags": [],
+	"description": "",
+	"content": " Open the newly created Spring Boot file with Interllij IDEA In the com.example.AWS_S3_File_Upload folder, we select New \u0026ndash;\u0026gt; Package named model. Similarly, we create two other parkages, controller and service In the model, we choose new \u0026ndash;\u0026gt; Java Class and name it User then type: public class User { private String description; private String filename; public User() { } public String getDescription() { return description; } public void setDescription(String description) { this.description = description; } public String getFilename() { return filename; } public void setFilename(String filename) { this.filename = filename; } } Similarly in the controller we also create a Java Class named: UserController then enter: import com.amazonaws.AmazonServiceException; import com.example.AWS_S3_File_Upload.model.User; import com.example.AWS_S3_File_Upload.service.S3service; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.ui.Model; import org.springframework.stereotype.Controller; import org.springframework.web.bind.annotation.GetMapping; import org.springframework.web.bind.annotation.PostMapping; import org.springframework.web.bind.annotation.RequestParam; import org.springframework.web.multipart.MultipartFile; import software.amazon.awssdk.core.exception.SdkClientException; import java.io.IOException; @Controller public class UserController { @Autowired S3service s3service; @GetMapping(\u0026#34;file-upload\u0026#34;) public String fileUploadPage() { return \u0026#34;form\u0026#34;; } @PostMapping(\u0026#34;file-upload\u0026#34;) public String saveFiles(Model model, @RequestParam(\u0026#34;description\u0026#34;) String description, @RequestParam(\u0026#34;file\u0026#34;) MultipartFile multipartFile) throws IOException { String filename = multipartFile.getOriginalFilename(); User user = new User(); user.setFilename(filename); user.setDescription(description); try { s3service.uploadtoS3(multipartFile.getInputStream(), filename); model.addAttribute(\u0026#34;message\u0026#34;, \u0026#34;File Successfully Uploaded\u0026#34;); } catch (AmazonServiceException e) { model.addAttribute(\u0026#34;message\u0026#34;, \u0026#34;AWS Service Error\u0026#34;); e.printStackTrace(); } catch (SdkClientException e) { model.addAttribute(\u0026#34;error\u0026#34;, \u0026#34;SDK Client Error\u0026#34;); e.printStackTrace(); } catch (IOException e) { model.addAttribute(\u0026#34;error\u0026#34;, \u0026#34;Error Uploading file\u0026#34;); e.printStackTrace(); } return \u0026#34;form\u0026#34;; } } Similarly in service, we also create a Java Class named S3service then enter: import org.springframework.stereotype.Service; import com.amazonaws.regions.Regions; import com.amazonaws.SdkClientException; import com.amazonaws.services.s3.AmazonS3; import com.amazonaws.services.s3.AmazonS3ClientBuilder; import com.amazonaws.services.s3.model.ObjectMetadata; import com.amazonaws.services.s3.model.PutObjectRequest; import java.io.IOException; import java.io.InputStream; @Service public class S3service { private String bucketName = \u0026#34;files123-s3\u0026#34;; Regions regions = Regions.AP_SOUTHEAST_1; public void uploadtoS3(InputStream inputStream, String filename) throws IOException, SdkClientException { AmazonS3 s3Client = AmazonS3ClientBuilder.standard() .withRegion(regions) .build(); ObjectMetadata metadata = new ObjectMetadata(); metadata.setContentType(\u0026#34;image/jpeg\u0026#34;); metadata.setContentLength(inputStream.available()); PutObjectRequest request = new PutObjectRequest(bucketName, filename, inputStream, metadata); s3Client.putObject(request); } } Next, we go to the pom.xml file, then in the dependencies section enter: \u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.amazonaws\u0026lt;/groupId\u0026gt; \u0026lt;artifactId \u0026gt;aws-java-sdk-s3\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.12.570\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; \u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.amazonaws\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;aws-java-sdk-s3\u0026lt; /artifactId\u0026gt; \u0026lt;version\u0026gt;1.12.570\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; After entering the above code, we need to Reload project we right-click \u0026ndash;\u0026gt; Maven \u0026ndash;\u0026gt; Reload project . "
+},
+{
+	"uri": "/3-adding-accectkey-secretkey-region/",
+	"title": "Add Accect key, Secret key, Region",
+	"tags": [],
+	"description": "",
+	"content": "Adding AWS S3 access key, secret key, and region to environment variables helps secure sensitive information, easily manage configurations, and make applications portable between different environments without changing the source code.\nOpen the user_accessKeys file you just downloaded and copy Accect Key. Next, go to Edit the system environment variable and select Environment Variable. In the System Variable table, select New.\nEnter the name and paste the Accect Key just now into Variable value then press OK.\nSimilarly, open the user_credential file you just downloaded, copy Password then in the System Variable table select New.\nEnter the name and paste the Password just now into Variable value then press OK.\nSimilarly in the System Variable table select New. Enter the name and Region name you are using then press OK. Finally press OK to save. "
+},
+{
+	"uri": "/4-create-project/create-frontend-source-code/",
+	"title": "Create Frontend Source Code",
+	"tags": [],
+	"description": "",
+	"content": "This project is almost done, but we need an interface to receive file uploads, so let\u0026rsquo;s create a user interface for it.\nFirst you need to access the path resources/template create an HTML file named form To create the user interface, you can use my front end source code. \u0026lt;!DOCTYPE html\u0026gt; \u0026lt;html xmlns:th=\u0026#34;http://www.thymeleaf.org\u0026#34; lang=\u0026#34;en\u0026#34;\u0026gt; \u0026lt;head\u0026gt; \u0026lt;meta charset=\u0026#34;UTF-8\u0026#34;\u0026gt; \u0026lt;meta name=\u0026#34;viewport\u0026#34; content=\u0026#34;width=device-width, initial-scale=1.0\u0026#34;\u0026gt; \u0026lt;title\u0026gt;Registration Page\u0026lt;/title\u0026gt; \u0026lt;style\u0026gt; body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; } .container { background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; width: 300px; } h1 { color: #FF5768; text-align: center; margin-bottom: 20px; } .form-group { margin-bottom: 15px; } label { display: block; margin-bottom: 5px; color: #333; } input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; } button { width: 100%; padding: 10px; background-color: #FF5768; border: none; border-radius: 4px; color: white; font-size: 16px; cursor: pointer; } button:hover { background-color: #e04b5f; } .message { color: #FF5768; text-align: center; margin-top: 10px; } .error { color: #e04b5f; text-align: center; margin-top: 10px; } \u0026lt;/style\u0026gt; \u0026lt;/head\u0026gt; \u0026lt;body\u0026gt; \u0026lt;div class=\u0026#34;container\u0026#34;\u0026gt; \u0026lt;h1\u0026gt;Registration\u0026lt;/h1\u0026gt; \u0026lt;div style=\u0026#34;color: red\u0026#34; th:if=\u0026#34;${error != null}\u0026#34;\u0026gt; [[${error}]] \u0026lt;/div\u0026gt; \u0026lt;div style=\u0026#34;color: red\u0026#34; th:if=\u0026#34;${message != null}\u0026#34;\u0026gt; [[${message}]] \u0026lt;/div\u0026gt; \u0026lt;form method=\u0026#34;post\u0026#34; action=\u0026#34;/file-upload\u0026#34; enctype=\u0026#34;multipart/form-data\u0026#34;\u0026gt; \u0026lt;div class=\u0026#34;form-group\u0026#34;\u0026gt; \u0026lt;label for=\u0026#34;description\u0026#34;\u0026gt;Description:\u0026lt;/label\u0026gt; \u0026lt;input type=\u0026#34;text\u0026#34; id=\u0026#34;description\u0026#34; name=\u0026#34;description\u0026#34; required\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;div class=\u0026#34;form-group\u0026#34;\u0026gt; \u0026lt;label for=\u0026#34;file\u0026#34;\u0026gt;Upload File:\u0026lt;/label\u0026gt; \u0026lt;input type=\u0026#34;file\u0026#34; id=\u0026#34;file\u0026#34; name=\u0026#34;file\u0026#34; required\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;button type=\u0026#34;submit\u0026#34;\u0026gt;Register\u0026lt;/button\u0026gt; \u0026lt;/form\u0026gt; \u0026lt;p class=\u0026#34;message\u0026#34; th:text=\u0026#34;${message}\u0026#34;\u0026gt;\u0026lt;/p\u0026gt; \u0026lt;p class=\u0026#34;error\u0026#34; th:text=\u0026#34;${error}\u0026#34;\u0026gt;\u0026lt;/p\u0026gt; \u0026lt;/div\u0026gt; \u0026lt;/body\u0026gt; \u0026lt;/html\u0026gt; Run Frontend Source and here is the result: "
+},
+{
+	"uri": "/2-preparation/2.3-create-s3-bucket/",
+	"title": "Create S3 Bucket",
+	"tags": [],
+	"description": "",
+	"content": "Last but not least, we will need an S3 bucket to store the image data. S3 Bucket is a great choice for storing image data due to its scalability, durability, and cost-effectiveness.\nNavigate to the S3 site by typing S3 in the service search bar and select the ‘S3’ service Select Create Bucket to create a new S3 Bucket. Enter the name then select ACLs enabled Review the S3 Bucket creation information and click Create Bucket. "
+},
+{
+	"uri": "/4-create-project/",
+	"title": "Create Project",
+	"tags": [],
+	"description": "",
+	"content": "Overview\nAfter completing the setup steps, we are ready to configure a project using spring boot to upload files to S3 Bucket.\nDetailed information about Spring Boot: Spring Boot\nIntellij IDEA installation: Intellij IDEA\nMain content Create Spring Boot Configuration source code Create Frontend source code "
+},
+{
+	"uri": "/5-test/",
+	"title": "Test",
+	"tags": [],
+	"description": "",
+	"content": "Next, we will test the project to see if the website is working properly.\nClick the run button to launch the Project Open a new tab and enter the path http://localhost:8080/file-upload Then select the file you want to upload and click Upload. Access your S3 bucket to check if the image has been uploaded. Sometimes you have run the project but get an error saying form.html is not found, you need to rebuild the Java project when there is a change in the source code, configuration, library, or project structure to ensure that all these changes are compiled and applied correctly. To Rebuild Project, select menu \u0026ndash;\u0026gt; build \u0026ndash;\u0026gt; Rebuild Project\n"
+},
+{
+	"uri": "/6-clean-up-resources/",
+	"title": "Cleaning Up Resources",
+	"tags": [],
+	"description": "",
+	"content": "At the end of this workshop, we will clean up all the resources we have created!\nDelete the S3 Bucket: Be careful when deleting a bucket, as it will also delete all the objects stored inside. Make sure you have a backup if needed. Locate the S3 Bucket you created. Select the Bucket by clicking on the Bucket name. If the Bucket contains objects, you can delete them manually by deleting each object or using the Empty bucket option. To delete a Bucket, click the Action button, then Manage bucket, and finally Empty bucket. When the Bucket is empty (or if it was already empty), click the \u0026ldquo;Action\u0026rdquo; button again. Select Delete and confirm the deletion. Delete IAM User Go to IAM and select the user name you want to delete. Click Delete and confirm the deletion. "
+},
+{
+	"uri": "/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
